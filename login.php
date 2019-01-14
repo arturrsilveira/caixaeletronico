@@ -1,3 +1,28 @@
+<?php 
+session_start();
+require 'config.php';
+
+if (isset($_POST['agencia']) && empty($_POST['agencia']) == false ) {
+    $agencia = addslashes($_POST['agencia']);
+    $conta   = addslashes($_POST['conta']);
+    $senha   = addslashes($_POST['senha']);
+
+    $sql = ("SELECT * FROM contas WHERE agencia = :agencia AND conta = :conta AND senha = :senha");
+    $sql->bindValue(":agencia", $agencia);
+    $sql->bindValue(":conta", $conta);
+    $sql->bindValue(":senha", md5($senha));
+    $sql->execute();
+
+    if ($sql->rowCount() > 0){
+        $sql = $sql->fetch();
+
+        $_SESSION['banco'] = $sql['id'];
+        header("Location: index.php");
+        exit;
+    }
+}
+?>
+
 <!DOCTYPE html>
 <html>
 <head>
@@ -16,15 +41,15 @@
     <form method="POST">
         <div class="form-group">
             <label for="">Agência:</label>
-            <input type="text" class="form-control" id="" aria-describedby="Agencia" placeholder="Insira o número da sua agência">
+            <input type="text" class="form-control" id="" aria-describedby="Agencia" name="agencia" placeholder="Insira o número da sua agência">
         </div>
         <div class="form-group">
             <label for="">Conta:</label>
-            <input type="text" class="form-control" id="" aria-describedby="Conta" placeholder="Insira o número da sua conta">
+            <input type="text" class="form-control" id="" aria-describedby="Conta" name="conta" placeholder="Insira o número da sua conta">
         </div>
         <div class="form-group">
             <label for="">Senha:</label>
-            <input type="password" class="form-control" id="Password" placeholder="Insira sua senha">
+            <input type="password" class="form-control" id="" name="password" placeholder="Insira sua senha">
         </div>
         <button type="submit" class="btn btn-primary btn-lg btn-block">Efetuar Login</button>
     
