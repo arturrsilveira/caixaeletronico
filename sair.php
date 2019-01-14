@@ -1,5 +1,5 @@
 <?php 
-session_star();
+session_start();
 
 unset($_SESSION['banco']);
 header("Location: login.php");

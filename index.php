@@ -3,6 +3,19 @@
     require 'config.php';
 
     if (isset($_SESSION['banco']) && empty($_SESSION) == false){
+        
+        $id = $_SESSION['banco'];
+
+        $sql = $pdo->prepare("SELECT * FROM contas WHERE id = :id");
+        $sql->bindValue(":id", $id);
+        $sql->execute();
+
+        if ($sql->rowCount() > 0) {
+            $info = $sql->fetch();
+        } else {
+            header("location: login.php");
+            exit;
+        }
 
     } else {
         header("location: login.php");
@@ -24,9 +37,9 @@
 
 <div class="container">
 
-<h3>BANCO DA FORTUNA!</h3>
-    Banco: Nº 000<br>
-    Agência: 000<br>
+<h3>Bem vindo <?php echo $info['titular']; ?>!</h3>
+    Conta: Nº <?php echo $info['conta']; ?><br>
+    Agência: <?php echo $info['agencia']; ?><br>
     <br>
     <br>
 
