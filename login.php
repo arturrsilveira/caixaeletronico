@@ -5,9 +5,9 @@ require 'config.php';
 if (isset($_POST['agencia']) && empty($_POST['agencia']) == false ) {
     $agencia = addslashes($_POST['agencia']);
     $conta   = addslashes($_POST['conta']);
-    $senha   = addslashes($_POST['senha']);
+    $senha   = addslashes($_POST['password']);
 
-    $sql = ("SELECT * FROM contas WHERE agencia = :agencia AND conta = :conta AND senha = :senha");
+    $sql = $pdo->prepare("SELECT * FROM contas WHERE agencia = :agencia AND conta = :conta AND senha = :senha");
     $sql->bindValue(":agencia", $agencia);
     $sql->bindValue(":conta", $conta);
     $sql->bindValue(":senha", md5($senha));
