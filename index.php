@@ -1,5 +1,12 @@
 <?php 
     session_start();
+
+    if (isset($_SESSION['banco']) && empty($_SESSION) == false){
+
+    } else {
+        header("location: login.php");
+        exit;
+    }
 ?>
 
 <!DOCTYPE html>
