@@ -40,10 +40,42 @@
 <h3>Bem vindo <?php echo $info['titular']; ?>!</h3>
     Conta: Nº <?php echo $info['conta']; ?><br>
     Agência: <?php echo $info['agencia']; ?><br>
-    <br>
+    Saldo: <?php echo $info['saldo']; ?><br>
+    <br><br>
+    <a href="sair.php" class="btn btn-danger">Sair</a>
+    <br><hr>
+    <h5>Movimentação/Extrato</h5>
+
+    <table class="table">
+        <thead class="thead-dark">
+        <tr>
+            <th>Data</th>
+            <th>Valor</th>  
+        </tr>
+        </thead>
+        <tbody>
+        <?php
+            $sql = $pdo->prepare("SELECT * FROM historico WHERE id_conta = :id");
+            $sql->bindValue(":id", $id);
+            $sql->execute();
+
+            if ($sql->rowCount() > 0){
+                foreach($sql->fetchAll() as $item){
+                ?>
+                    <tr>
+                    <td><?php echo $item['data_operacao'] ?></td>
+                    <td><?php echo $item['valor'] ?></td>
+                    </tr>
+                <?php
+                }
+            }
+        ?>
+        </tbody>
+   
+    </table>
     <br>
 
-    <a href="sair.php" class="btn btn-danger">Sair</a>
+
 
 </div>
     
