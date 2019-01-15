@@ -45,6 +45,7 @@
     <a href="sair.php" class="btn btn-danger">Sair</a>
     <br><hr>
     <h5>Movimentação/Extrato</h5>
+    <a href="addtransacao.php" class="btn btn-success"> + Adicionar Transação</a><br><br>
 
     <table class="table">
         <thead class="thead-dark">
@@ -63,8 +64,16 @@
                 foreach($sql->fetchAll() as $item){
                 ?>
                     <tr>
-                    <td><?php echo $item['data_operacao'] ?></td>
-                    <td><?php echo $item['valor'] ?></td>
+                        <td>
+                            <?php echo date('d/m/y H:m', strtotime($item['data_operacao'])) ?>
+                        </td>
+                        <td>
+                            <?php if($item['tipo'] == 0) : ?>
+                                <font color="green">R$ <?php echo $item['valor'] ?></font>
+                            <?php else : ?>
+                                <font color="red">- R$ <?php echo $item['valor'] ?></font>
+                            <?php endif; ?>
+                        </td>
                     </tr>
                 <?php
                 }
