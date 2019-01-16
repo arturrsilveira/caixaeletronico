@@ -1,5 +1,35 @@
 <?php 
 session_start();
+require 'config.php';
+
+if (isset($_POST['tipo'])){
+    $tipo = $_POST['tipo'];
+    $valor = str_replace(",", ".", $_POST['valor']);
+    $valor = floatval($valor);
+    $id = $_SESSION['banco'];
+
+    $sql = $pdo->prepare("INSERT INTO historico (id_conta, tipo, valor, data_operacao) VALUES (:id_conta, :tipo, :valor, NOW())");
+    $sql->bindValue(":id_conta", $id);
+    $sql->bindValue(":tipo", $tipo);
+    $sql->bindValue(":valor", $valor);
+    $sql->execute();
+
+    if ($tipo == '0'){
+        $sql = $pdo->prepare("UPDATE contas SET saldo = saldo + :valor WHERE id = :id");
+        $sql->bindValue(":valor", $valor);
+        $sql->bindValue(":id", $_SESSION['banco']);
+        $sql->execute();
+    } else {
+        $sql = $pdo->prepare("UPDATE contas SET saldo = saldo - :valor WHERE id = :id");
+        $sql->bindValue(":valor", $valor);
+        $sql->bindValue(":id", $_SESSION['banco']);
+        $sql->execute();
+    }
+
+    header("Location: index.php");
+    exit;
+}
+
 ?>
 
 <!DOCTYPE html>
